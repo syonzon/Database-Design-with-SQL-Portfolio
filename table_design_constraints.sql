@@ -1,25 +1,27 @@
 ```sql
 -- Create the ProductMaster table
-create table ProductMaster (
-    ProductId Int Primary Key, -- Primary key column for ProductId
-    ProductName varchar(30) not null -- ProductName column, not allowing null values
+-- This table stores information about products.
+CREATE TABLE ProductMaster (
+    ProductId INT PRIMARY KEY, -- Primary key column for ProductId
+    ProductName VARCHAR(30) NOT NULL -- ProductName column, not allowing null values
 );
 
 -- Retrieve all records from the ProductMaster table
-select * from ProductMaster;
+SELECT * FROM ProductMaster;
 
 -- Create the CustomerTransaction table
-create table CustomerTransaction (
-    CustomerId int,
-    CustomerName varchar(30) not null,
-    CCPoints int check(CCPoints >= 20 and CCPoints <= 67), -- CCPoints column with a check constraint
-    DL varchar(30) unique, -- DL column with a unique constraint
-    ProductId int Foreign key references ProductMaster(ProductId), -- Foreign key referencing ProductMaster(ProductId)
-    ShippingDate date default '2014-07-26' -- ShippingDate column with a default value
+-- This table tracks customer transactions.
+CREATE TABLE CustomerTransaction (
+    CustomerId INT,
+    CustomerName VARCHAR(30) NOT NULL,
+    CCPoints INT CHECK (CCPoints >= 20 AND CCPoints <= 67), -- CCPoints column with a check constraint
+    DL VARCHAR(30) UNIQUE, -- DL column with a unique constraint
+    ProductId INT REFERENCES ProductMaster(ProductId), -- Foreign key referencing ProductMaster(ProductId)
+    ShippingDate DATE DEFAULT '2014-07-26' -- ShippingDate column with a default value
 );
 
 -- Retrieve all records from the CustomerTransaction table
-select * from CustomerTransaction;
+SELECT * FROM CustomerTransaction;
 
 -- Rename the CustomerTranaction table to CustomerTransaction
 EXEC sp_rename 'CustomerTranaction', 'CustomerTransaction';
@@ -36,123 +38,136 @@ WHERE parent_object_id = OBJECT_ID('ProductMaster')
   AND parent_column_id = COLUMNPROPERTY(OBJECT_ID('ProductMaster'), 'ProductId', 'ColumnId');
 
 -- Dropping the primary key constraint in the ProductMaster table
+-- This step removes the primary key constraint from the ProductMaster table.
 ALTER TABLE ProductMaster
 DROP CONSTRAINT PK__ProductM__B40CC6CD6EC925E1;
 
 -- Add Primary Key constraint
 -- Alter Table [TABLENAME]
--- add constraint [Primary Key] Primary key(Column1,Column2,.....)
+-- Add CONSTRAINT [Primary Key] PRIMARY KEY(Column1, Column2, ...)
 
 -- Adding the Primary key constraint to the ProductMaster table
+-- This step adds a primary key constraint to the ProductMaster table on the ProductId column.
 ALTER TABLE ProductMaster
 ADD CONSTRAINT PK_ProductMaster PRIMARY KEY (ProductId);
 
 -- Dropping the Primary key constraint in the ProductMaster table
+-- This step removes the primary key constraint from the ProductMaster table.
 ALTER TABLE ProductMaster
 DROP CONSTRAINT PK_ProductMaster;
 
 -- Altering the ProductName column to allow NULL values in the ProductMaster table
+-- This step modifies the ProductName column in the ProductMaster table to allow NULL values.
 ALTER TABLE ProductMaster
 ALTER COLUMN ProductName VARCHAR(30) NULL;
 
 -- Dropping the foreign key constraint in the CustomerTransaction table
+-- This step removes the foreign key constraint from the CustomerTransaction table.
 ALTER TABLE CustomerTransaction
 DROP CONSTRAINT FK__CustomerT__Produ__6383C8BA;
 
 -- Add Foreign Key Constraint
 -- Alter Table [TABLENAME]
--- Add Constraint [CONSTRAINTNAME] Foreign Key (Column) References Table2 (Column)
+-- Add CONSTRAINT [CONSTRAINTNAME] FOREIGN KEY (Column) REFERENCES Table2 (Column)
 
 -- Adding the foreign key constraint to the CustomerTransaction table
+-- This step adds a foreign key constraint to the CustomerTransaction table, referencing the ProductMaster table.
 ALTER TABLE CustomerTransaction
-ADD CONSTRAINT FK_CustomerTransaction Foreign Key (ProductId) References ProductMaster (ProductId);
+ADD CONSTRAINT FK_CustomerTransaction FOREIGN KEY (ProductId) REFERENCES ProductMaster (ProductId);
 
 -- Drop Foreign Key Constraint
+-- This step removes the foreign key constraint from the CustomerTransaction table.
 ALTER TABLE CustomerTransaction 
 DROP CONSTRAINT FK_CustomerTransaction;
 
 -- Create the UniqueKeyTable01 table
-create table UniqueKeyTable01 (
-    EmpId int Primary Key,
-    EmpName varchar(30) not null,
-    DLno varchar(30)
+-- This table stores unique keys with associated employee information.
+CREATE TABLE UniqueKeyTable01 (
+    EmpId INT PRIMARY KEY,
+    EmpName VARCHAR(30) NOT NULL,
+    DLno VARCHAR(30)
 );
 
--- Create a unique nonclustered index on DLno column
-Create unique nonclustered index idx_tbl_UniqueKeyTable_DLno
-On UniqueKeyTable01(DLno)
-where DLno is not null;
+-- Create a unique nonclustered index on DLno column in UniqueKeyTable01
+-- This index ensures that the DLno values are unique where DLno is not null.
+CREATE UNIQUE NONCLUSTERED INDEX idx_tbl_UniqueKeyTable_DLno
+ON UniqueKeyTable01(DLno)
+WHERE DLno IS NOT NULL;
 
--- Insert records into UniqueKeyTable01
-insert into UniqueKeyTable01
-values (1, 'Madhav01', null);
+-- Insert records into the UniqueKeyTable01 table
+INSERT INTO UniqueKeyTable01
+VALUES (1, 'Madhav01', NULL),
+       (2, 'Madhav02', NULL),
+       (3, 'Madhav03', NULL);
 
-insert into UniqueKeyTable01
-values (2, 'Madhav02', null);
+-- Retrieve all records from the UniqueKeyTable01 table
+SELECT * FROM UniqueKeyTable01;
 
-insert into UniqueKeyTable01
-values (3, 'Madhav03', null);
+-- Insert additional records into the UniqueKeyTable01 table
+INSERT INTO UniqueKeyTable01
+VALUES (4, 'Madhav04', NULL),
+       (5, 'Madhav05', NULL);
 
--- Retrieve all records from UniqueKeyTable01
-select * from UniqueKeyTable01;
-
-insert into UniqueKeyTable01
-values (4, 'Madhav04', null);
-
-insert into UniqueKeyTable01
-values (5, 'Madhav05', null);
-
--- Retrieve all records from UniqueKeyTable01
-select * from UniqueKeyTable01;
+-- Retrieve all records from the UniqueKeyTable01 table
+SELECT * FROM UniqueKeyTable01;
 
 -- CASE STUDY
+
 -- Create the LOCATION table
-create table LOCATION (
-    Location_ID int Primary Key,
-    City varchar(30)
+-- This table stores information about different locations.
+CREATE TABLE LOCATION (
+    Location_ID INT PRIMARY KEY,
+    City VARCHAR(30)
 );
 
 -- Create the DEPARTMENT table
-Create table DEPARTMENT(
-    Department_Id int Primary Key,
-    Name varchar(30),
-    Location_Id int Foreign Key references LOCATION (Location_Id)
+-- This table stores information about departments with a foreign key reference to the LOCATION table.
+CREATE TABLE DEPARTMENT (
+    Department_Id INT PRIMARY KEY,
+    Name VARCHAR(30),
+    Location_Id INT REFERENCES LOCATION(Location_Id)
 );
 
 -- Retrieve all records from the LOCATION table
-select * from LOCATION;
+SELECT * FROM LOCATION;
 
 -- Retrieve all records from the DEPARTMENT table
-select * from DEPARTMENT;
+SELECT * FROM DEPARTMENT;
 
 -- Retrieve all records from the JOB table
-select * from JOB;
+SELECT * FROM JOB;
 
 -- Retrieve all records from the Employee table
-select * from Employee;
+SELECT * FROM Employee;
 
--- Get column names from the EmployeeDB database
+-- Get column names from the JOB table
+-- This query retrieves the column names for the JOB table in the EmployeeDB database.
 USE EmployeeDB;
+
 SELECT COLUMN_NAME
 FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME = 'JOB';
 
 -- SET OPERATORS (CASE STUDY)
--- 1. LIST OUT THE DISTINCT JOBS IN SALES AND ACCOUNTING DEPARTMENTS.
+
+-- List out the distinct jobs in the Sales and Accounting departments
+-- This query lists the distinct job titles in the Sales and Accounting departments.
 SELECT DISTINCT J.Designation
 FROM JOB J
 JOIN Employee E ON J.Job_ID = E.Job_Id_FK
 JOIN DEPARTMENT D ON E.Department_Id_FK = D.Department_ID_PK
 WHERE D.Name IN ('Sales', 'Accounting');
 
--- 2. LIST OUT ALL THE JOBS IN SALES AND ACCOUNTING DEPARTMENTS.
+-- List out all the jobs in the Sales and Accounting departments
+-- This query lists all the job titles in the Sales and Accounting departments.
 SELECT J.Designation
 FROM JOB J
 JOIN Employee E ON J.Job_ID = E.Job_Id_FK
 JOIN DEPARTMENT D ON E.Department_Id_FK = D.Department_ID_PK
 WHERE D.Name IN ('Sales', 'Accounting');
 
--- 3. LIST OUT THE COMMON JOBS IN RESEARCH AND ACCOUNTING DEPARTMENTS IN ASCENDING ORDER. 
+-- List out the common jobs in the Research and Accounting departments in ascending order
+-- This query lists the common job titles in the Research and Accounting departments, sorted in ascending order.
 SELECT J.Designation
 FROM JOB J
 JOIN Employee E ON J.Job_ID = E.Job_Id_FK
