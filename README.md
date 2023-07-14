@@ -29,7 +29,3 @@ Please note that the provided queries are intended for demonstration purposes on
 The queries are organized based on different topics and can be executed in SSMS or any SQL Server-compatible environment.
 
 Feel free to explore and utilize these queries as a reference for your own SQL database management tasks.
-
------------------------------------------------------------------------
-
-The README file provides an overview of the project, introduces the database objects, and explains the structure of the queries and examples. It also includes a disclaimer regarding the manipulation of queries. You can add or modify the content as needed to provide more specific details about the project and its purpose.
