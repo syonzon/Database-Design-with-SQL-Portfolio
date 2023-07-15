@@ -6,6 +6,7 @@ This repository contains SQL queries and examples for database management using 
 1. Introduction
 2. Database Objects
 3. Queries and Examples
+4. Constraints
 
 ## Introduction
 This project focuses on SQL database management using SSMS. It includes queries for creating and modifying database objects, such as tables, views, and constraints. The provided queries demonstrate various aspects of SQL, including table creation, data manipulation, and querying.
@@ -23,6 +24,9 @@ The following database objects are used in the provided queries:
 
 ## Queries and Examples
 The project provides various SQL queries and examples to illustrate different database management scenarios. These queries cover topics such as creating tables, altering table structures, managing constraints, and performing data retrieval.
+
+Constraints
+The project utilizes SQL Server Management Studio (SSMS) to apply various constraints on the database tables. Constraints such as primary keys, foreign keys, unique keys, and check constraints were implemented to ensure data integrity and enforce business rules. SSMS provided a user-friendly interface to design, create, and manage these constraints, allowing for efficient database management.
 
 Please note that the provided queries are intended for demonstration purposes only and should not be manipulated directly. Modify the queries as needed for your specific database environment.
 
