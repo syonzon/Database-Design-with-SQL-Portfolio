@@ -1,80 +1,88 @@
--- Create the ProductMaster table
--- This table stores information about products.
-CREATE TABLE ProductMaster (
-    ProductId INT PRIMARY KEY, -- Primary key column for ProductId
-    ProductName VARCHAR(30) NOT NULL -- ProductName column, not allowing null values
+#create table code snippet
+-- Creating the proMas table
+CREATE TABLE proMas (
+    ProdId INT PRIMARY KEY,
+    ProdName VARCHAR(30) NOT NULL,
+    ProdCost MONEY
 );
 
--- Retrieve all records from the ProductMaster table
-SELECT * FROM ProductMaster;
+-- Selecting all records from UniTab table
+SELECT * FROM UniTab;
 
--- Create the CustomerTransaction table
--- This table tracks customer transactions.
-CREATE TABLE CustomerTransaction (
-    CustomerId INT,
-    CustomerName VARCHAR(30) NOT NULL,
-    CCPoints INT CHECK (CCPoints >= 20 AND CCPoints <= 67), -- CCPoints column with a check constraint
-    DL VARCHAR(30) UNIQUE, -- DL column with a unique constraint
-    ProductId INT REFERENCES ProductMaster(ProductId), -- Foreign key referencing ProductMaster(ProductId)
-    ShippingDate DATE DEFAULT '2014-07-26' -- ShippingDate column with a default value
+-- Creating the CusmTr table
+CREATE TABLE CusmTr (
+    CusmId INT PRIMARY KEY,
+    CusmName VARCHAR(30) NOT NULL,
+    CusmLoc VARCHAR(30) NOT NULL,
+    EmailId VARCHAR(30) NOT NULL,
+    CCP INT CHECK (CCP >= 20 AND CCP <= 67),
+    DL VARCHAR(30) UNIQUE,
+    ProdID INT REFERENCES proMas(ProdID),
+    ShipDate DATE DEFAULT '2014-07-26'
 );
 
--- Retrieve all records from the CustomerTransaction table
-SELECT * FROM CustomerTransaction;
+-- Creating the UniTab table
+CREATE TABLE UniTab (
+    EmId INT PRIMARY KEY,
+    EmNam VARCHAR(30) NOT NULL,
+    DL VARCHAR(30)
+);
 
--- Rename the CustomerTranaction table to CustomerTransaction
-EXEC sp_rename 'CustomerTranaction', 'CustomerTransaction';
+-- Creating a unique nonclustered index on UniTab table
+CREATE UNIQUE NONCLUSTERED INDEX uni_idx_DL
+ON UniTab(DL)
+WHERE DL IS NOT NULL;
 
--- Identifying primary key constraints in the ProductMaster table
-SELECT name
-FROM sys.key_constraints
-WHERE type = 'PK' AND OBJECT_NAME(parent_object_id) = 'ProductMaster';
+-- Creating the UniqueKeyTable01 table
+CREATE TABLE UniqueKeyTable01 (
+    EmpId INT PRIMARY KEY,
+    EmpName VARCHAR(30) NOT NULL,
+    DLno VARCHAR(30)
+);
 
--- Identifying default constraints in the ProductMaster table
-SELECT name
-FROM sys.default_constraints
-WHERE parent_object_id = OBJECT_ID('ProductMaster')
-  AND parent_column_id = COLUMNPROPERTY(OBJECT_ID('ProductMaster'), 'ProductId', 'ColumnId');
+-- Creating a unique nonclustered index on UniqueKeyTable01 table
+CREATE UNIQUE NONCLUSTERED INDEX idx_tbl_UniqueKeyTable_DLno
+ON UniqueKeyTable01(DLno)
+WHERE DLno IS NOT NULL;
 
--- Dropping the primary key constraint in the ProductMaster table
--- This step removes the primary key constraint from the ProductMaster table.
-ALTER TABLE ProductMaster
-DROP CONSTRAINT PK__ProductM__B40CC6CD6EC925E1;
+-- Inserting records into UniqueKeyTable01 table
+INSERT INTO UniqueKeyTable01
+VALUES (1, 'Madhav01', NULL);
 
--- Add Primary Key constraint
--- Alter Table [TABLENAME]
--- Add CONSTRAINT [Primary Key] PRIMARY KEY(Column1, Column2, ...)
+INSERT INTO UniqueKeyTable01
+VALUES (2, 'Madhav02', NULL);
 
--- Adding the Primary key constraint to the ProductMaster table
--- This step adds a primary key constraint to the ProductMaster table on the ProductId column.
-ALTER TABLE ProductMaster
-ADD CONSTRAINT PK_ProductMaster PRIMARY KEY (ProductId);
+INSERT INTO UniqueKeyTable01
+VALUES (3, 'Madhav03', NULL);
 
--- Dropping the Primary key constraint in the ProductMaster table
--- This step removes the primary key constraint from the ProductMaster table.
-ALTER TABLE ProductMaster
-DROP CONSTRAINT PK_ProductMaster;
+INSERT INTO UniqueKeyTable01
+VALUES (4, 'Madhav04', NULL);
 
--- Altering the ProductName column to allow NULL values in the ProductMaster table
--- This step modifies the ProductName column in the ProductMaster table to allow NULL values.
-ALTER TABLE ProductMaster
-ALTER COLUMN ProductName VARCHAR(30) NULL;
+INSERT INTO UniqueKeyTable01
+VALUES (5, 'Madhav05', NULL);
 
--- Dropping the foreign key constraint in the CustomerTransaction table
--- This step removes the foreign key constraint from the CustomerTransaction table.
-ALTER TABLE CustomerTransaction
-DROP CONSTRAINT FK__CustomerT__Produ__6383C8BA;
+-- Selecting all records from UniqueKeyTable01 table
+SELECT * FROM UniqueKeyTable01;
 
--- Add Foreign Key Constraint
--- Alter Table [TABLENAME]
--- Add CONSTRAINT [CONSTRAINTNAME] FOREIGN KEY (Column) REFERENCES Table2 (Column)
+-- Dropping the unique constraint on CusmTr table
+ALTER TABLE CusmTr
+DROP CONSTRAINT UQ__CusmTr__3214621E02D795EA;
 
--- Adding the foreign key constraint to the CustomerTransaction table
--- This step adds a foreign key constraint to the CustomerTransaction table, referencing the ProductMaster table.
-ALTER TABLE CustomerTransaction
-ADD CONSTRAINT FK_CustomerTransaction FOREIGN KEY (ProductId) REFERENCES ProductMaster (ProductId);
+-- Retrieving constraint information for CusmTr table
+SELECT 
+    CONSTRAINT_NAME, CONSTRAINT_TYPE
+FROM 
+    INFORMATION_SCHEMA.TABLE_CONSTRAINTS
+WHERE 
+    TABLE_NAME = 'CusmTr';
 
--- Drop Foreign Key Constraint
--- This step removes the foreign key constraint from the CustomerTransaction table.
-ALTER TABLE CustomerTransaction 
-DROP CONSTRAINT FK_CustomerTransaction;
+-- Adding a foreign key constraint to CusmTr table
+ALTER TABLE CusmTr
+ADD CONSTRAINT FK_ProID FOREIGN KEY (ProdID) REFERENCES proMas(ProdID);
+
+-- Adding a composite primary key constraint to CusmTr table
+ALTER TABLE CusmTr
+ADD CONSTRAINT PK_CusmID PRIMARY KEY (CusmID, CusmNam);
+
+-- Selecting all records from CusmTr table
+SELECT * FROM CusmTr;
