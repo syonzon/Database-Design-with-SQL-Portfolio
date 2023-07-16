@@ -1,4 +1,4 @@
-#create table code snippet
+#create_tables code snippet
 -- Creating the proMas table 
 CREATE TABLE proMas (
     ProdId INT PRIMARY KEY,
