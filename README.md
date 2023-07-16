@@ -27,6 +27,19 @@ The project provides various SQL queries and examples to illustrate different da
 
 Constraints
 The project utilizes SQL Server Management Studio (SSMS) to apply various constraints on the database tables. Constraints such as primary keys, foreign keys, unique keys, and check constraints were implemented to ensure data integrity and enforce business rules. SSMS provided a user-friendly interface to design, create, and manage these constraints, allowing for efficient database management.
+In this database schema, several constraints have been applied to ensure data integrity and enforce business rules. Constraints are rules or conditions that restrict the values or relationships within tables. The following constraints are utilized:
+
+Primary Key: The PRIMARY KEY constraint is applied to uniquely identify each record in a table. It ensures that the specified column(s) have unique values and cannot contain null values.
+
+Foreign Key: The FOREIGN KEY constraint establishes a link between two tables, enforcing referential integrity. It ensures that the values in the foreign key column(s) of a table match the primary key column(s) of the referenced table.
+
+Unique: The UNIQUE constraint ensures that the values in the specified column(s) are unique across all records in the table. It allows for null values but ensures that non-null values are unique.
+
+Check: The CHECK constraint defines a condition that must be satisfied for each record in the table. It limits the range of values that can be inserted or updated in a column.
+
+Not Null: The NOT NULL constraint restricts a column from containing null values. It ensures that the specified column(s) must always have a value.
+
+Default: The DEFAULT constraint assigns a default value to a column if no explicit value is specified during insertion. It ensures that the column is populated with a predefined value when no other value is provided.
 
 Please note that the provided queries are intended for demonstration purposes only and should not be manipulated directly. Modify the queries as needed for your specific database environment.
 
