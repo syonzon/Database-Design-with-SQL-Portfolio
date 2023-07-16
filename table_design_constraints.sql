@@ -1,8 +1,8 @@
 #create table code snippet
--- Creating the proMas table
+-- Creating the proMas table 
 CREATE TABLE proMas (
     ProdId INT PRIMARY KEY,
-    ProdName VARCHAR(30) NOT NULL,
+    ProdName VARCHAR(30) NOT NULL, --constraint
     ProdCost MONEY
 );
 
