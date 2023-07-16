@@ -1,4 +1,3 @@
-```sql
 -- Create the ProductMaster table
 -- This table stores information about products.
 CREATE TABLE ProductMaster (
@@ -79,4 +78,3 @@ ADD CONSTRAINT FK_CustomerTransaction FOREIGN KEY (ProductId) REFERENCES Product
 -- This step removes the foreign key constraint from the CustomerTransaction table.
 ALTER TABLE CustomerTransaction 
 DROP CONSTRAINT FK_CustomerTransaction;
-```
